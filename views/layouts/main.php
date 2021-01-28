@@ -17,6 +17,7 @@ $this->registerCssFile('https://fonts.googleapis.com/css?family=Source+Sans+Pro:
 $directoryAsset = Yii::$app->assetManager->getPublishedUrl('@vendor/almasaeed2010/adminlte/dist');
 AdminLTEAsset::register($this);
 \app\assets\FontAwesomeAsset::register($this);
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -28,6 +29,7 @@ AdminLTEAsset::register($this);
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
+
     </head>
     <body class="hold-transition sidebar-mini layout-fixed text-sm accent-lightblue">
     <?php $this->beginBody() ?>
@@ -63,3 +65,4 @@ AdminLTEAsset::register($this);
     </body>
 </html>
 <?php $this->endPage() ?>
+

@@ -43,6 +43,13 @@ $config = [
             ],
         ],
         'db' => $db,
+        'redis' => [
+          'class' => 'yii\redis\Connection',
+          'hostname' => 'game.kinghip.com',
+          'port' => 7003,
+          'database' => 0,
+          'password'=>'cVTt6!2dQvP4H!&'
+        ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,

@@ -87,6 +87,26 @@
       $str = strtolower($str);
       return $str;
     }
+
+    public static function _require_all($path, $depth=0, $isOnce = true) {
+      $dirhandle = @opendir($path);
+      if ($dirhandle === false) return;
+      while (($file = readdir($dirhandle)) !== false) {
+        if ($file !== '.' && $file !== '..') {
+          $fullfile = $path . '/' . $file;
+          if (is_dir($fullfile)) {
+            PluginsController::_require_all($fullfile, $depth+1);
+          } else if (strlen($fullfile)>4 && substr($fullfile,-4) == '.php') {
+            if($isOnce)
+              require_once $fullfile;
+            else
+              require $fullfile;
+          }
+        }
+      }
+
+      closedir($dirhandle);
+    }
   }
   abstract class ActionEvent
   {

@@ -33,7 +33,11 @@
             if(array_key_exists($key->name, $_GET)){
               $params[] = $_GET[$key->name];
             }else{
-              $params[] = null;
+              if($key->isOptional()){
+                $params[] = $key->getDefaultValue();
+              }else{
+                die("parameter ".$key->name." is missing");
+              }
             }
           }
           $content = call_user_func_array($route[$r], $params);
@@ -45,7 +49,7 @@
         }
       }
       if($content == ""){
-        $content = "Route URL is not define: ".$r;
+        $content = "Route URL is not define: ".$r." or content is empty";
       }
       return $this->render('view', ['content'=>$content]);
     }

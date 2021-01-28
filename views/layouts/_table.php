@@ -9,7 +9,7 @@
     $tableID = (isset($table['id'])?$table['id']:'');
     ?>
     <div class="card">
-      <div class="card-header">
+      <div class="card-header bg-cyan">
         <h3 class="card-title"><?= $table['title']; ?></h3>
         <div class="card-tools">
           <div class="input-group input-group-sm" style="width: 150px;">
@@ -29,7 +29,7 @@
           </div>
           <div class="row">
             <div class="col-sm-12">
-              <table id="<?=$tableID;?>" class="table table-bordered table-hover dataTable dtr-inline" role="grid">
+              <table id="<?=$tableID;?>" class="table table-hover" role="grid">
                 <thead>
                 <tr role="row">
                   <?php
