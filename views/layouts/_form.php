@@ -39,7 +39,6 @@
       ?>
     </div>
     <!-- /.card-body -->
-
     <div class="card-footer">
       <input type="submit" class="btn btn-info" value="<?=$model->isNewRecord?'Thêm mới':'Chỉnh sửa';?>"></input>
       <span class="btn btn-warning">Quay lại</span>
