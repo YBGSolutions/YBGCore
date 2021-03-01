@@ -56,7 +56,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
               '' => 'site/index',
-              'p/<r:[a-zA-Z0-9\-\/]+>' => 'plugins/view',
+              'admin/p/<r:[a-zA-Z0-9\-\/]+>' => '/admin/plugins/view',
               '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
             ],
         ],

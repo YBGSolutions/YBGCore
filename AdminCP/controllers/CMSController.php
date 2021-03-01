@@ -1,5 +1,5 @@
 <?php
-  namespace app\controllers;
+  namespace app\AdminCP\controllers;
   use Yii;
   use yii\filters\AccessControl;
   use yii\filters\VerbFilter;

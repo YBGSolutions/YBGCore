@@ -44,7 +44,7 @@
         "id" => $Slug,
         "icon" => $Icon,
         "menu_name" => $MenuName,
-        "route_url" => "/p/".$Route,
+        "route_url" => "/admin/p/".$Route,
         "parent_id" => $parent
       ];
       if($ParentSlug != "" && array_key_exists($ParentSlug, $this->Menu)){
@@ -65,7 +65,7 @@
       return Yii::$app->view->renderFile(__DIR__.'/'.$pluginName.'/views/'.$file.'.php', $params, $context);
     }
     public final function RenderLayout($file, $params = [], $context = null){
-      $layoutPath = Yii::getAlias('@webroot')."/../views/layouts/";
+      $layoutPath = Yii::getAlias('@webroot')."/../AdminCP/views/layouts/";
       return Yii::$app->view->renderFile($layoutPath.$file.'.php', $params, $context);
     }
     public final function redirect($url, $statusCode = 302){

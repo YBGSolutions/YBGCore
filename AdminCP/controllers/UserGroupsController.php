@@ -1,16 +1,19 @@
 <?php
-  namespace app\controllers;
+  namespace app\AdminCP\controllers;
 
   use app\models\Menus;
+  use app\models\User;
+  use app\models\UserGroups;
   use Yii;
 
-  class MenusController extends CMSController {
+  class UserGroupsController extends CMSController {
     public function actionIndex(){
-      return $this->render('index');
+      $UserGroups = UserGroups::find()->asArray()->all();
+      return $this->render('index',['UserGroups'=>$UserGroups]);
     }
 
     public function actionEdit($id){
-      $model = Menus::findOne(['id'=>$id]);
+      $model = UserGroups::findOne(['id'=>$id]);
       if($model){
         if(Yii::$app->request->isPost){
           if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -25,7 +28,7 @@
     }
 
     public function actionCreate(){
-      $model = new Menus();
+      $model = new UserGroups();
       if(Yii::$app->request->isPost){
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
           if($model->save()){
@@ -37,7 +40,7 @@
     }
 
     public function actionRemove($id){
-      $model = Menus::findOne(['id'=>$id]);
+      $model = UserGroups::findOne(['id'=>$id]);
       if($model){
         $model->delete();
       }

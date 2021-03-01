@@ -1,18 +1,16 @@
 <?php
-  namespace app\controllers;
+  namespace app\AdminCP\controllers;
 
   use app\models\Menus;
-  use app\models\User;
   use Yii;
 
-  class UsersController extends CMSController {
+  class MenusController extends CMSController {
     public function actionIndex(){
-      $Users = User::find()->asArray()->all();
-      return $this->render('index',['Users'=>$Users]);
+      return $this->render('index');
     }
 
     public function actionEdit($id){
-      $model = User::findOne(['id'=>$id]);
+      $model = Menus::findOne(['id'=>$id]);
       if($model){
         if(Yii::$app->request->isPost){
           if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -27,7 +25,7 @@
     }
 
     public function actionCreate(){
-      $model = new User();
+      $model = new Menus();
       if(Yii::$app->request->isPost){
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
           if($model->save()){
@@ -39,7 +37,7 @@
     }
 
     public function actionRemove($id){
-      $model = User::findOne(['id'=>$id]);
+      $model = Menus::findOne(['id'=>$id]);
       if($model){
         $model->delete();
       }

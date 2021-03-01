@@ -1,6 +1,6 @@
 <?php
 
-  namespace app\controllers;
+  namespace app\AdminCP\controllers;
 
   use app\plugins\ActionEvent;
   use app\plugins\EventHelpers;

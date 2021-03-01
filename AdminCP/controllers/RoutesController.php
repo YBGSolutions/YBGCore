@@ -1,6 +1,6 @@
 <?php
 
-  namespace app\controllers;
+  namespace app\AdminCP\controllers;
 
   class RoutesController extends CMSController {
 
