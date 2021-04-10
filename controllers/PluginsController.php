@@ -1,8 +1,7 @@
 <?php
 
-  namespace app\AdminCP\controllers;
+  namespace app\controllers;
 
-  use app\helpers\AdminHelpers;
   use app\plugins\ActionEvent;
   use app\plugins\EventHelpers;
   use Closure;
@@ -21,7 +20,7 @@
     }
 
     public function actionView($r){
-      $ListRouteEvent = EventHelpers::GetEvents(ActionEvent::OnRouteLoader);
+      $ListRouteEvent = EventHelpers::GetEvents(ActionEvent::OnPublicRouteLoader);
       $content = "";
       foreach($ListRouteEvent as $event){
         $route = $event();
@@ -48,10 +47,6 @@
           }
           break;
         }
-      }
-
-      if(AdminHelpers::EndsWith($r, "/widget")){
-        $this->layout = "widget/main";
       }
       if($content == ""){
         $content = "Route URL is not define: ".$r." or content is empty";

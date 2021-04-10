@@ -1,6 +1,8 @@
 <?php
   namespace app\plugins;
+  use app\helpers\AdminHelpers;
   use Yii;
+  use yii\helpers\Url;
 
   class PluginsController{
 
@@ -8,6 +10,7 @@
     public static $MenuRoot = 0;
     protected $Menu = [];
     protected $Route = [];
+    protected $PublicRoute = [];
     protected $requirePlugins = [];
     public function __construct() {
       if(count($this->requirePlugins) > 0){
@@ -19,12 +22,14 @@
       }
       EventHelpers::RegisterEvent(ActionEvent::OnMenuLoader,array( $this, 'OnMenu'));
       EventHelpers::RegisterEvent(ActionEvent::OnRouteLoader,array( $this, 'OnRoute'));
+      EventHelpers::RegisterEvent(ActionEvent::OnPublicRouteLoader, [$this, 'OnPublicRoute']);
       EventHelpers::RegisterEvent(ActionEvent::OnYiiLoaded,array( $this, 'OnYiiLoaded'));
       static::Routes($this);
     }
     public function __destruct() {
       EventHelpers::RemoveEvent(ActionEvent::OnMenuLoader,array( $this, 'OnMenu'));
       EventHelpers::RemoveEvent(ActionEvent::OnRouteLoader,array( $this, 'OnRoute'));
+      EventHelpers::RemoveEvent(ActionEvent::OnPublicRouteLoader, [$this, 'OnPublicRoute']);
       EventHelpers::RemoveEvent(ActionEvent::OnYiiLoaded,array( $this, 'OnYiiLoaded'));
     }
     public function OnYiiLoaded(){
@@ -37,6 +42,20 @@
 
     public final function OnRoute(){
       return $this->Route;
+    }
+
+    public final function OnPublicRoute(){
+      return $this->PublicRoute;
+    }
+
+    public final function toRoute($route){
+      $className = substr(strrchr(get_class($this), '\\'), 1);
+      if(is_array($route)){
+        $route[0] = str_replace("{0}", "p/".$className, $route[0]);
+      }else{
+        $route = str_replace("{0}", "p/".$className, $route);
+      }
+      return Url::toRoute($route);
     }
 
     public function AddMenu($MenuName, $Icon, $Route, $Slug, $parent = 0, $ParentSlug = ""){
@@ -54,14 +73,21 @@
       }
     }
 
-    public function AddRoute($routeName, callable $func){
-      if(!array_key_exists($routeName, $this->Route)){
-        $this->Route[$routeName] = $func;
+    public function AddRoute($routeName, callable $func, $isPublic = false){
+      if(!$isPublic){
+        if(!array_key_exists($routeName, $this->Route)){
+          $this->Route[$routeName] = $func;
+        }
+      }else{
+        if(!array_key_exists($routeName, $this->PublicRoute)){
+          $this->PublicRoute[$routeName] = $func;
+        }
       }
     }
 
     public final function render($file, $params = [], $context = null){
       $pluginName = substr(strrchr(get_class($this), '\\'), 1);
+      $params['ctrl']=$this;
       return Yii::$app->view->renderFile(__DIR__.'/'.$pluginName.'/views/'.$file.'.php', $params, $context);
     }
     public final function RenderLayout($file, $params = [], $context = null){
@@ -69,6 +95,12 @@
       return Yii::$app->view->renderFile($layoutPath.$file.'.php', $params, $context);
     }
     public final function redirect($url, $statusCode = 302){
+      $className = substr(strrchr(get_class($this), '\\'), 1);
+      if(is_array($url)){
+        $url = str_replace("{0}", "p/".$className, $url);
+      }else{
+        $url = str_replace("{0}", "p/".$className, $url);
+      }
       return Yii::$app->response->redirect($url, $statusCode);
     }
 
@@ -76,10 +108,14 @@
       $class_methods = get_class_methods($ctl);
       $className = substr(strrchr(get_class($ctl), '\\'), 1);
       foreach ($class_methods as $method_name) {
-        if(str_starts_with($method_name,"action")){
+        if(AdminHelpers::StartsWith($method_name, 'actionPublic')){
+          $method = substr($method_name, 12);
+          $ctl->AddRoute("{$className}/".static::uncamelCase($method), [$ctl, $method_name], true);
+        }else if(AdminHelpers::StartsWith($method_name,"action")){
           $method = substr($method_name, 6);
           $ctl->AddRoute("{$className}/".static::uncamelCase($method), [$ctl, $method_name]);
         }
+
       }
     }
     static function uncamelCase($str) {
@@ -113,5 +149,6 @@
     const OnMenuLoader = "OnMenu";
     const OnHookingLoader = "OnHooking";
     const OnRouteLoader = "OnRoute";
+    const OnPublicRouteLoader = "OnPublicRoute";
     const OnYiiLoaded = "OnYiiLoaded";
   }

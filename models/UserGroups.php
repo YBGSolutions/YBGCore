@@ -10,6 +10,8 @@ use Yii;
  * @property int $id
  * @property string $name
  * @property string|null $desc
+ *
+ * @property User[] $users
  */
 class UserGroups extends \yii\db\ActiveRecord
 {
@@ -41,6 +43,17 @@ class UserGroups extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'desc' => 'Desc',
+            'can_order' => 'Can Order',
         ];
+    }
+
+    /**
+     * Gets query for [[Users]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsers()
+    {
+        return $this->hasMany(User::className(), ['group_id' => 'id']);
     }
 }
