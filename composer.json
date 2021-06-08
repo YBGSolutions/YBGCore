@@ -3,7 +3,12 @@
     "description": "Yii 2 Basic Project with Plugin Management",
     "keywords": ["yii2", "framework", "basic", "project template"],
     "homepage": "https://ybgsolutions.vn/",
-    "author": ["ngovihai.it@gmail.com"],
+    "authors": [
+        {
+            "name": "Kinghip",
+            "email": "ngovihai.it@gmail.com"
+        }
+    ],
     "type": "project",
     "license": "BSD-3-Clause",
     "minimum-stability": "stable",
